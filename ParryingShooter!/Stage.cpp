@@ -15,6 +15,7 @@ enum StageType
 	_BOSS,
 	_SHIELD,
 };
+float parryingTimer;
 
 void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer ,PPOS pStartPos)
 {
@@ -84,17 +85,24 @@ void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 		{
 			if (!pPlayer->isParryinged)
 			{
-				float parryingTimer = GetTickCount64();
+				parryingTimer = (float)time(NULL);
 				pPlayer->isParryinged = true;
 				stage[pPlayer->pos.y][pPlayer->pos.x + 1] = '4';
-				if (GetTickCount64() - parryingTimer >= 300)
-				{
-					stage[pPlayer->pos.y][pPlayer->pos.x + 1] = '1';
-					pPlayer->isParryinged = false;
-				}
+				
+			}
+			else if ((float)time(NULL) - parryingTimer >= 3000 && pPlayer->isParryinged)
+			{
+				pPlayer->isParryinged = false;
 			}
 		}
 	}
+}
+
+void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer)
+{
+	Sleep(50);
+	if(stage[pBullet->bulletPos.y][pBullet->bulletPos.x - 1] == stage[pPlayer->pos.y][pPlayer->pos.x])
+	pBullet->bulletPos.x--;
 }
 
 
@@ -103,7 +111,7 @@ void PMoveDown(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 {
 	if (pPlayer->pos.y + 1 <= StageHeight)
 	{
-		if (stage[pPlayer->pos.y+1][pPlayer->pos.x] != '0' && stage[pPlayer->pos.y+1][pPlayer->pos.x] != '3')
+		if (stage[pPlayer->pos.y+1][pPlayer->pos.x] != '0' && stage[pPlayer->pos.y+1][pPlayer->pos.x] != '3' && stage[pPlayer->pos.y + 1][pPlayer->pos.x] != '4')
 		{
 			++pPlayer->pos.y;
 		}
@@ -114,7 +122,7 @@ void PMoveUp(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 {
 	if (pPlayer->pos.y - 1 >= 0)
 	{
-		if (stage[pPlayer->pos.y-1][pPlayer->pos.x] != '0' && stage[pPlayer->pos.y-1][pPlayer->pos.x] != '3')
+		if (stage[pPlayer->pos.y-1][pPlayer->pos.x] != '0' && stage[pPlayer->pos.y-1][pPlayer->pos.x] != '3' && stage[pPlayer->pos.y - 1][pPlayer->pos.x] != '4')
 		{
 			--pPlayer->pos.y;
 		}
@@ -125,7 +133,7 @@ void PMoveLeft(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 {
 	if (pPlayer->pos.x - 1 >= 0)
 	{
-		if (stage[pPlayer->pos.y][pPlayer->pos.x - 1] != '0' && stage[pPlayer->pos.y][pPlayer->pos.x - 1] != '3')
+		if (stage[pPlayer->pos.y][pPlayer->pos.x - 1] != '0' && stage[pPlayer->pos.y][pPlayer->pos.x - 1] != '3' && stage[pPlayer->pos.y][pPlayer->pos.x - 1] != '4')
 		{
 			--pPlayer->pos.x;
 		}
@@ -136,7 +144,7 @@ void PMoveRight(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 {
 	if (pPlayer->pos.x + 1 <= StageWeight - 1)
 	{
-		if (stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '0' && stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '3')
+		if (stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '0' && stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '3' && stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '4')
 		{
 			++pPlayer->pos.x;
 		}
