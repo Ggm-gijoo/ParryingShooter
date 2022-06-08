@@ -45,7 +45,7 @@ int main()
 	PLAYER tPlayer;
 	tPlayer.isParryinged = false;
 	SetStage(Stage,&tPlayer,&tStartPos);
-	cout << "아무 키나 눌러서 시작해라." << endl;
+	cout << "아무 키나 눌러서 시작" << endl;
 	char startInput = _getch();
 	system("cls");
 	while (true)

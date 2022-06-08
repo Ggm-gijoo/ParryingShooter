@@ -101,7 +101,15 @@ void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer)
 {
 	Sleep(50);
-	if(stage[pBullet->bulletPos.y][pBullet->bulletPos.x - 1] == stage[pPlayer->pos.y][pPlayer->pos.x])
+	if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x - 1] == stage[pPlayer->pos.y][pPlayer->pos.x])
+	{
+		pPlayer->pHp--;
+	}
+	else if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x - 1] == '6')
+	{
+
+	}
+	else
 	pBullet->bulletPos.x--;
 }
 

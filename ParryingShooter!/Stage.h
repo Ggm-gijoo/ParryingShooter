@@ -13,6 +13,7 @@ typedef struct _player
 {
 	_pos pos;
 	bool isParryinged;
+	int pHp = 3;
 }PLAYER, *PPLAYER;
 
 typedef struct _Bullet
