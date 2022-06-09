@@ -35,7 +35,7 @@ void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer ,PPOS pStartP
 	strcpy_s(Stage[10],"00000000000000000000");
 }
 
-void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer)
+void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBULLET pBullet)
 {
 	for (int i = 0; i < StageHeight; i++)
 	{
@@ -46,6 +46,11 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer)
 			{
 				setColor(9);
 				cout << "¢º";
+			}
+			else if (pBullet->bulletPos.x == j && pBullet->bulletPos.y == i)
+			{
+				setColor(5);
+				cout << "o ";
 			}
 			else
 			{

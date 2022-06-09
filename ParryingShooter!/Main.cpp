@@ -43,6 +43,7 @@ int main()
 												 
 	POS tStartPos;
 	PLAYER tPlayer;
+	BULLET tBullet;
 	tPlayer.isParryinged = false;
 	SetStage(Stage,&tPlayer,&tStartPos);
 	cout << "아무 키나 눌러서 시작" << endl;
@@ -51,7 +52,7 @@ int main()
 	while (true)
 	{
 		gotoxy(0, 10);
-		DrawStage(Stage, &tPlayer);
+		DrawStage(Stage, &tPlayer, &tBullet);
 		char cinput = _getch();
 		if (cinput == VK_ESCAPE)
 		{

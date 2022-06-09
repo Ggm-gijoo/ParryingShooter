@@ -22,7 +22,7 @@ typedef struct _Bullet
 }BULLET, *PBULLET;
 
 void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PPOS pStartPos);
-void DrawStage(char Stage[StageHeight][StageWeight], PPLAYER pPlayer);
+void DrawStage(char Stage[StageHeight][StageWeight], PPLAYER pPlayer, PBULLET pBullet);
 
 void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer);
 
