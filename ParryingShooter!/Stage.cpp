@@ -17,17 +17,20 @@ enum StageType
 };
 float parryingTimer;
 
-void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer ,PPOS pStartPos)
+void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PPOS pStartPos, PPOS pBossPos)
 {
 	pStartPos->x = 1;
 	pStartPos->y = 5;
 	pPlayer->pos = *pStartPos;
+	pBossPos->x = 18;
+	pBossPos->y = 5;
+	pBoss->bossPos = *pBossPos;
 	strcpy_s(Stage[0], "00000000000000000000");
 	strcpy_s(Stage[1], "01111111111111111110");
 	strcpy_s(Stage[2], "01111111111111111110");
 	strcpy_s(Stage[3], "01111111111111111110");
 	strcpy_s(Stage[4], "01111111111111111110");
-	strcpy_s(Stage[5], "01111111111111111130");
+	strcpy_s(Stage[5], "01111111111111111110");
 	strcpy_s(Stage[6], "01111111111111111110");
 	strcpy_s(Stage[7], "01111111111111111110");
 	strcpy_s(Stage[8], "01111111111111111110");
@@ -35,7 +38,7 @@ void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer ,PPOS pStartP
 	strcpy_s(Stage[10],"00000000000000000000");
 }
 
-void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBULLET pBullet)
+void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PBULLET pBullet)
 {
 	for (int i = 0; i < StageHeight; i++)
 	{
@@ -47,6 +50,11 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBULLET pBu
 				setColor(9);
 				cout << "¢º";
 			}
+			else if (pBoss->bossPos.x == j && pBoss->bossPos.y == i)
+			{
+				setColor(5);
+				cout << "¢¸";
+			}
 			else if (pBullet->bulletPos.x == j && pBullet->bulletPos.y == i)
 			{
 				setColor(5);
@@ -57,7 +65,7 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBULLET pBu
 				switch (Stage[i][j])
 				{
 				case _WALL:
-					setColor(wallColor);
+					setColor(15);
 					cout << "¡á";
 					break;
 				case _VOID:
@@ -66,10 +74,6 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBULLET pBu
 						cout << "  ";
 					else
 						cout << " .";
-					break;
-				case _BOSS:
-					setColor(5);
-					cout << "¢¸";
 					break;
 				case _SHIELD:
 					setColor(6);
@@ -103,21 +107,29 @@ void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 	}
 }
 
-void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer)
+void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer, PSHIELD pShield)
 {
 	Sleep(50);
-	if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x - 1] == stage[pPlayer->pos.y][pPlayer->pos.x])
+	if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x] == stage[pPlayer->pos.y][pPlayer->pos.x])
 	{
 		pPlayer->pHp--;
 	}
-	else if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x - 1] == '6')
+	/*else if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x] == stage[pShield->shieldPos.y][pShield->shieldPos.x])
 	{
 
-	}
+	}*/
 	else
 	pBullet->bulletPos.x--;
 }
 
+void BossFire(char stage[StageHeight][StageWeight], PBOSS pBoss, PPLAYER pPlayer, PSHIELD pShield)
+{
+	BULLET *bossBullet = new BULLET;
+	bossBullet->bulletPos.x = 0;
+	bossBullet->bulletPos.y = 0;
+	stage[bossBullet->bulletPos.y][bossBullet->bulletPos.x] = stage[pBoss->bossPos.y][pBoss->bossPos.x - 1];
+	//BulletMove(stage[StageHeight][StageWeight], bossBullet, pPlayer, pShield);
+}
 
 
 void PMoveDown(char stage[StageHeight][StageWeight], PPLAYER pPlayer)

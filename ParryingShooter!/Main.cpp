@@ -42,17 +42,21 @@ int main()
 												 
 												 
 	POS tStartPos;
+	POS tBossPos;
 	PLAYER tPlayer;
+	SHIELD tShield;
 	BULLET tBullet;
+	BOSS tBoss;
 	tPlayer.isParryinged = false;
-	SetStage(Stage,&tPlayer,&tStartPos);
+	SetStage(Stage, &tPlayer, &tBoss, &tStartPos, &tBossPos);
 	cout << "아무 키나 눌러서 시작" << endl;
 	char startInput = _getch();
 	system("cls");
 	while (true)
 	{
 		gotoxy(0, 10);
-		DrawStage(Stage, &tPlayer, &tBullet);
+		DrawStage(Stage, &tPlayer, &tBoss, &tBullet);
+		BossFire(Stage, &tBoss, &tPlayer, &tShield);
 		char cinput = _getch();
 		if (cinput == VK_ESCAPE)
 		{
@@ -76,5 +80,8 @@ int main()
 			Parrying(Stage, &tPlayer);
 		}
 		PlayerMove(Stage, &tPlayer);
+		
+
+	
 	}
 }
