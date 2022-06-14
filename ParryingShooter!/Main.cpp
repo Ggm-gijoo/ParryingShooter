@@ -55,8 +55,8 @@ int main()
 	while (true)
 	{
 		gotoxy(0, 10);
-		DrawStage(Stage, &tPlayer, &tBoss, &tBullet);
-		BossFire(Stage, &tBoss, &tPlayer, &tShield);
+		DrawStage(Stage, &tPlayer, &tBoss, BossFire(&tBoss, &tPlayer), &tShield);
+
 		char cinput = _getch();
 		if (cinput == VK_ESCAPE)
 		{
@@ -77,7 +77,8 @@ int main()
 		}
 		if (cinput == VK_SPACE)
 		{
-			Parrying(Stage, &tPlayer);
+			BulletMove(Stage, BossFire(&tBoss, &tPlayer), &tPlayer, &tShield);
+			Parrying(Stage, &tPlayer, &tShield);
 		}
 		PlayerMove(Stage, &tPlayer);
 		

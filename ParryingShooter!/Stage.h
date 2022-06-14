@@ -33,12 +33,12 @@ typedef struct _Boss
 }BOSS, *PBOSS;
 
 void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PPOS pStartPos, PPOS pBossPos);
-void DrawStage(char Stage[StageHeight][StageWeight], PPLAYER pPlayer, PBOSS pBoss, PBULLET pBullet);
+void DrawStage(char Stage[StageHeight][StageWeight], PPLAYER pPlayer, PBOSS pBoss, PBULLET pBullet, PSHIELD pShield);
 
-void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer);
+void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pShield);
 
 void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer, PSHIELD pShield);
-void BossFire(char stage[StageHeight][StageWeight], PBOSS pBoss, PPLAYER pPlayer, PSHIELD pShield);
+BULLET *BossFire(PBOSS pBoss, PPLAYER pPlayer);
 
 void PMoveDown(char stage[StageHeight][StageWeight], PPLAYER pPlayer);
 void PMoveUp(char stage[StageHeight][StageWeight], PPLAYER pPlayer);

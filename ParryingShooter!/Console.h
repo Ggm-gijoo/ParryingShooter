@@ -4,6 +4,7 @@
 #include <time.h>
 #include <conio.h>
 #include <chrono>
+#include <queue>
 
 void gotoxy(int x, int y);
 

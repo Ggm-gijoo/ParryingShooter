@@ -38,7 +38,7 @@ void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss,
 	strcpy_s(Stage[10],"00000000000000000000");
 }
 
-void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PBULLET pBullet)
+void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PBULLET pBullet, PSHIELD pShield)
 {
 	for (int i = 0; i < StageHeight; i++)
 	{
@@ -54,6 +54,11 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 			{
 				setColor(5);
 				cout << "¢¸";
+			}
+			else if (pShield->shieldPos.x == j && pShield->shieldPos.y == i)
+			{
+				setColor(6);
+				cout << " )";
 			}
 			else if (pBullet->bulletPos.x == j && pBullet->bulletPos.y == i)
 			{
@@ -74,11 +79,6 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 						cout << "  ";
 					else
 						cout << " .";
-					break;
-				case _SHIELD:
-					setColor(6);
-					cout << " )";
-					break;
 				}
 			}
 		}
@@ -86,49 +86,48 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 	}
 }
 
-void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
+void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pShield)
 {
 	if (pPlayer->pos.x + 1 <= StageWeight - 1)
 	{
 		if (stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '0' && stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '3')
 		{
-			if (!pPlayer->isParryinged)
-			{
 				parryingTimer = (float)time(NULL);
 				pPlayer->isParryinged = true;
-				stage[pPlayer->pos.y][pPlayer->pos.x + 1] = '4';
-				
-			}
-			else if ((float)time(NULL) - parryingTimer >= 3000 && pPlayer->isParryinged)
-			{
-				pPlayer->isParryinged = false;
-			}
+				pShield->shieldPos.y = pPlayer->pos.y;
+				pShield->shieldPos.x = pPlayer->pos.x + 1;
 		}
 	}
 }
 
 void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer, PSHIELD pShield)
 {
-	Sleep(50);
+	Sleep(100);
+	cout << pBullet->bulletPos.x;
 	if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x] == stage[pPlayer->pos.y][pPlayer->pos.x])
 	{
 		pPlayer->pHp--;
 	}
-	/*else if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x] == stage[pShield->shieldPos.y][pShield->shieldPos.x])
+	else if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x] == stage[pShield->shieldPos.y][pShield->shieldPos.x])
 	{
 
-	}*/
-	else
+	}
 	pBullet->bulletPos.x--;
 }
 
-void BossFire(char stage[StageHeight][StageWeight], PBOSS pBoss, PPLAYER pPlayer, PSHIELD pShield)
+BULLET *BossFire(PBOSS pBoss, PPLAYER pPlayer)
 {
+	queue<BULLET*> bulletQueue;
 	BULLET *bossBullet = new BULLET;
-	bossBullet->bulletPos.x = 0;
-	bossBullet->bulletPos.y = 0;
-	stage[bossBullet->bulletPos.y][bossBullet->bulletPos.x] = stage[pBoss->bossPos.y][pBoss->bossPos.x - 1];
-	//BulletMove(stage[StageHeight][StageWeight], bossBullet, pPlayer, pShield);
+
+	bulletQueue.push(bossBullet);
+
+	if (bossBullet->bulletPos.x == bossBullet->bulletPos.y && bossBullet->bulletPos.y == -842150451)
+	{
+		bossBullet->bulletPos.x = pBoss->bossPos.x - 1;
+		bossBullet->bulletPos.y = pBoss->bossPos.y;
+	}
+	return bulletQueue.front();	
 }
 
 
