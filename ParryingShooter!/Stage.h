@@ -12,7 +12,7 @@ typedef struct _pos
 typedef struct _player
 {
 	_pos pos;
-	bool isParryinged;
+	bool isParryinged = false;
 	int pHp = 3;
 }PLAYER, *PPLAYER;
 
@@ -24,6 +24,7 @@ typedef struct _Shield
 typedef struct _Bullet
 {
 	_pos bulletPos;
+	bool isPar = false;
 }BULLET, *PBULLET;
 
 typedef struct _Boss
@@ -37,7 +38,7 @@ void DrawStage(char Stage[StageHeight][StageWeight], PPLAYER pPlayer, PBOSS pBos
 
 void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pShield);
 
-void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer, PSHIELD pShield);
+void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer, PSHIELD pShield, PBOSS pBoss);
 BULLET *BossFire(PBOSS pBoss, PPLAYER pPlayer);
 
 void PMoveDown(char stage[StageHeight][StageWeight], PPLAYER pPlayer);

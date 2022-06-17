@@ -77,8 +77,8 @@ int main()
 		}
 		if (cinput == VK_SPACE)
 		{
-			BulletMove(Stage, BossFire(&tBoss, &tPlayer), &tPlayer, &tShield);
 			Parrying(Stage, &tPlayer, &tShield);
+			BulletMove(Stage, BossFire(&tBoss, &tPlayer), &tPlayer, &tShield, &tBoss);
 		}
 		PlayerMove(Stage, &tPlayer);
 		

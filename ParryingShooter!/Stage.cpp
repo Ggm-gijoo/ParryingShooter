@@ -99,35 +99,43 @@ void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pSh
 		}
 	}
 }
-
-void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer, PSHIELD pShield)
+deque<BULLET*> bulletDeq;
+void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer, PSHIELD pShield, PBOSS pBoss)
 {
+	bulletDeq.push_back(pBullet);
 	Sleep(100);
-	cout << pBullet->bulletPos.x;
-	if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x] == stage[pPlayer->pos.y][pPlayer->pos.x])
+	for (int i = 0; i < bulletDeq.size(); i++)
 	{
-		pPlayer->pHp--;
+		if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == stage[pPlayer->pos.y][pPlayer->pos.x] && !bulletDeq[i]->isPar)
+		{
+			pPlayer->pHp--;
+		}
+		else if (pShield->shieldPos != nullptr && stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == stage[pShield->shieldPos.y][pShield->shieldPos.x] && !bulletDeq[i]->isPar)
+		{
+			bulletDeq[i]->isPar = true;
+		}
+		else if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == stage[pBoss->bossPos.y][pBoss->bossPos.x] && bulletDeq[i]->isPar)
+		{
+			pBoss->bHp--;
+		}
+		if (!bulletDeq[i]->isPar)
+			bulletDeq[i]->bulletPos.x--;
+		else
+			bulletDeq[i]->bulletPos.x++;
+		cout << bulletDeq[i]->bulletPos.x;
 	}
-	else if (stage[pBullet->bulletPos.y][pBullet->bulletPos.x] == stage[pShield->shieldPos.y][pShield->shieldPos.x])
-	{
-
-	}
-	pBullet->bulletPos.x--;
 }
 
 BULLET *BossFire(PBOSS pBoss, PPLAYER pPlayer)
 {
-	queue<BULLET*> bulletQueue;
 	BULLET *bossBullet = new BULLET;
-
-	bulletQueue.push(bossBullet);
 
 	if (bossBullet->bulletPos.x == bossBullet->bulletPos.y && bossBullet->bulletPos.y == -842150451)
 	{
 		bossBullet->bulletPos.x = pBoss->bossPos.x - 1;
 		bossBullet->bulletPos.y = pBoss->bossPos.y;
 	}
-	return bulletQueue.front();	
+	return bossBullet;	
 }
 
 
