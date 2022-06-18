@@ -46,15 +46,12 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 		for (int j = 0; j < StageWeight; j++)
 		{
 			int wallColor = rand() % 15 + 1;
-			for (int a = 0; a < bulletDeq.size(); a++)
+			if (Check(j,i))
 			{
-				if (bulletDeq[a]->bulletPos.x == j && bulletDeq[a]->bulletPos.y == i)
-				{
 					setColor(5);
 					cout << "o ";
-				}
 			}
-			if (pPlayer->pos.x == j && pPlayer->pos.y == i)
+			else if (pPlayer->pos.x == j && pPlayer->pos.y == i)
 			{
 				setColor(9);
 				cout << "¢º";
@@ -87,6 +84,18 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 			}
 		}
 		cout << endl;
+	}
+}
+
+bool Check(int x, int y)
+{
+	for (int a = 0; a < bulletDeq.size(); a++)
+	{
+		if (bulletDeq[a]->bulletPos.x == x && bulletDeq[a]->bulletPos.y == y)
+		{
+			return true;
+		}
+		else return false;
 	}
 }
 
