@@ -16,6 +16,7 @@ enum StageType
 	_SHIELD,
 };
 float parryingTimer;
+deque<BULLET*> bulletDeq;
 
 void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PPOS pStartPos, PPOS pBossPos)
 {
@@ -38,13 +39,21 @@ void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss,
 	strcpy_s(Stage[10],"00000000000000000000");
 }
 
-void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PBULLET pBullet, PSHIELD pShield)
+void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PSHIELD pShield)
 {
 	for (int i = 0; i < StageHeight; i++)
 	{
 		for (int j = 0; j < StageWeight; j++)
 		{
 			int wallColor = rand() % 15 + 1;
+			for (int a = 0; a < bulletDeq.size(); a++)
+			{
+				if (bulletDeq[a]->bulletPos.x == j && bulletDeq[a]->bulletPos.y == i)
+				{
+					setColor(5);
+					cout << "o ";
+				}
+			}
 			if (pPlayer->pos.x == j && pPlayer->pos.y == i)
 			{
 				setColor(9);
@@ -59,11 +68,6 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 			{
 				setColor(6);
 				cout << " )";
-			}
-			else if (pBullet->bulletPos.x == j && pBullet->bulletPos.y == i)
-			{
-				setColor(5);
-				cout << "o ";
 			}
 			else
 			{
@@ -99,7 +103,6 @@ void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pSh
 		}
 	}
 }
-deque<BULLET*> bulletDeq;
 void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer, PSHIELD pShield, PBOSS pBoss)
 {
 	bulletDeq.push_back(pBullet);
@@ -110,7 +113,7 @@ void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER p
 		{
 			pPlayer->pHp--;
 		}
-		else if (pShield->shieldPos != nullptr && stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == stage[pShield->shieldPos.y][pShield->shieldPos.x] && !bulletDeq[i]->isPar)
+		else if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == stage[pShield->shieldPos.y][pShield->shieldPos.x] && !bulletDeq[i]->isPar)
 		{
 			bulletDeq[i]->isPar = true;
 		}

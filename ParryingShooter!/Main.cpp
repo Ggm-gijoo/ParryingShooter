@@ -55,7 +55,7 @@ int main()
 	while (true)
 	{
 		gotoxy(0, 10);
-		DrawStage(Stage, &tPlayer, &tBoss, BossFire(&tBoss, &tPlayer), &tShield);
+		DrawStage(Stage, &tPlayer, &tBoss, &tShield);
 
 		char cinput = _getch();
 		if (cinput == VK_ESCAPE)

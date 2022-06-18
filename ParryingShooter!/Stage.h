@@ -34,7 +34,7 @@ typedef struct _Boss
 }BOSS, *PBOSS;
 
 void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PPOS pStartPos, PPOS pBossPos);
-void DrawStage(char Stage[StageHeight][StageWeight], PPLAYER pPlayer, PBOSS pBoss, PBULLET pBullet, PSHIELD pShield);
+void DrawStage(char Stage[StageHeight][StageWeight], PPLAYER pPlayer, PBOSS pBoss, PSHIELD pShield);
 
 void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pShield);
 
