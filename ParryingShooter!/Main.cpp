@@ -17,6 +17,8 @@ char Stage[StageHeight][StageWeight];
 int main()
 {
 	fullscreen();
+	PlayingBgm();
+	//setScreenSize();
 	 setColor(4);
 	 wcout << " /$$$$$$$                                          /$$                    "<<endl;
 	 wcout << "| $$__  $$                                        |__/                    "<<endl; 
@@ -57,6 +59,7 @@ int main()
 		gotoxy(0, 10);
 		DrawStage(Stage, &tPlayer, &tBoss, &tShield);
 
+		BulletMove(Stage, BossFire(&tBoss, &tPlayer), &tPlayer, &tShield, &tBoss);
 		char cinput = _getch();
 		if (cinput == VK_ESCAPE)
 		{

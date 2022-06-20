@@ -1,0 +1,12 @@
+﻿  Console.cpp
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Console.cpp(42,87): warning C4311: '형식 캐스트': 'LPVOID'에서 'DWORD'(으)로 포인터가 잘립니다.
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Console.cpp(42,87): warning C4302: '형식 캐스트': 'LPVOID'에서 'DWORD'(으)로 잘립니다.
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Console.cpp(44,77): warning C4311: '형식 캐스트': 'LPVOID'에서 'DWORD'(으)로 포인터가 잘립니다.
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Console.cpp(44,77): warning C4302: '형식 캐스트': 'LPVOID'에서 'DWORD'(으)로 잘립니다.
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Console.cpp(49,78): warning C4311: '형식 캐스트': 'LPVOID'에서 'DWORD'(으)로 포인터가 잘립니다.
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Console.cpp(49,78): warning C4302: '형식 캐스트': 'LPVOID'에서 'DWORD'(으)로 잘립니다.
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Console.cpp(52,90): warning C4311: '형식 캐스트': 'LPVOID'에서 'DWORD'(으)로 포인터가 잘립니다.
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Console.cpp(52,90): warning C4302: '형식 캐스트': 'LPVOID'에서 'DWORD'(으)로 잘립니다.
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Console.cpp(54,71): warning C4311: '형식 캐스트': 'LPVOID'에서 'DWORD'(으)로 포인터가 잘립니다.
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Console.cpp(54,71): warning C4302: '형식 캐스트': 'LPVOID'에서 'DWORD'(으)로 잘립니다.
+  ParryingShooter!.vcxproj -> C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\x64\Debug\ParryingShooter!.exe

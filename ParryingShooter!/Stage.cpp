@@ -46,12 +46,7 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 		for (int j = 0; j < StageWeight; j++)
 		{
 			int wallColor = rand() % 15 + 1;
-			if (Check(j,i))
-			{
-					setColor(5);
-					cout << "o ";
-			}
-			else if (pPlayer->pos.x == j && pPlayer->pos.y == i)
+			if (pPlayer->pos.x == j && pPlayer->pos.y == i)
 			{
 				setColor(9);
 				cout << "▶";
@@ -65,6 +60,11 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 			{
 				setColor(6);
 				cout << " )";
+			}
+			else if (Check(j, i))
+			{
+				setColor(5);
+				cout << "o ";
 			}
 			else
 			{
@@ -118,23 +118,28 @@ void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER p
 	Sleep(100);
 	for (int i = 0; i < bulletDeq.size(); i++)
 	{
-		if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == stage[pPlayer->pos.y][pPlayer->pos.x] && !bulletDeq[i]->isPar)
+		if (bulletDeq[i]->bulletPos.y == pPlayer->pos.y && bulletDeq[i]->bulletPos.x == pPlayer->pos.x && !bulletDeq[i]->isPar)
 		{
+			cout << "총알 위치 : " << bulletDeq[i]->bulletPos.x;
+			cout << " 플레이어 위치 : " << pPlayer->pos.x << endl << endl;
 			pPlayer->pHp--;
 		}
-		else if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == stage[pShield->shieldPos.y][pShield->shieldPos.x] && !bulletDeq[i]->isPar)
+		else if (bulletDeq[i]->bulletPos.y == pShield->shieldPos.y && bulletDeq[i]->bulletPos.x == pShield->shieldPos.x && !bulletDeq[i]->isPar)
 		{
 			bulletDeq[i]->isPar = true;
 		}
-		else if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == stage[pBoss->bossPos.y][pBoss->bossPos.x] && bulletDeq[i]->isPar)
+		else if (bulletDeq[i]->bulletPos.y == pBoss->bossPos.y && bulletDeq[i]->bulletPos.x == pBoss->bossPos.x && bulletDeq[i]->isPar)
 		{
 			pBoss->bHp--;
+		}
+		else if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == '0')
+		{
+			bulletDeq.erase(bulletDeq.begin() + i);
 		}
 		if (!bulletDeq[i]->isPar)
 			bulletDeq[i]->bulletPos.x--;
 		else
 			bulletDeq[i]->bulletPos.x++;
-		cout << bulletDeq[i]->bulletPos.x;
 	}
 }
 

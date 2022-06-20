@@ -1,2 +1,3 @@
 C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Debug\ParryingShooter!.exe
 C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\ParryingShooter!\Debug\ParryingShooter!.pdb
+C:\Users\USER\source\repos\ParryingShooter!\ParryingShooter\Debug\ParryingShooter!.pdb
