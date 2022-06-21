@@ -24,6 +24,7 @@ typedef struct _Shield
 typedef struct _Bullet
 {
 	_pos bulletPos;
+	int color = 5;
 	bool isPar = false;
 }BULLET, *PBULLET;
 
@@ -37,10 +38,13 @@ void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss,
 void DrawStage(char Stage[StageHeight][StageWeight], PPLAYER pPlayer, PBOSS pBoss, PSHIELD pShield);
 bool Check(int x, int y);
 
-void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pShield);
+void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pShield, PBOSS pBoss);
+void DestroyParrying(PPLAYER pPlayer, PSHIELD pShield);
 
-void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer, PSHIELD pShield, PBOSS pBoss);
-BULLET *BossFire(PBOSS pBoss, PPLAYER pPlayer);
+
+void BulletMove(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pShield, PBOSS pBoss);
+BULLET *BossInstantiateBullet(PBOSS pBoss, PPLAYER pPlayer);
+void BossFire(PBOSS pBoss, PPLAYER pPlayer);
 
 void PMoveDown(char stage[StageHeight][StageWeight], PPLAYER pPlayer);
 void PMoveUp(char stage[StageHeight][StageWeight], PPLAYER pPlayer);

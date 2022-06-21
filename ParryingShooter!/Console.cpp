@@ -43,13 +43,49 @@ void PlayingBgm()
 	dwID = OpenBgm.wDeviceID;
 	mciSendCommand(dwID, MCI_PLAY, MCI_DGV_PLAY_REPEAT, (DWORD)(LPVOID)&PlayBgm);
 }
-
 void PlayingEffect()
 {
-	mciSendCommand(dwID, MCI_SEEK, MCI_SEEK_TO_START, (DWORD)(LPVOID)&PlayEffect);
+	mciSendCommand(dwID2, MCI_SEEK, MCI_SEEK_TO_START, (DWORD)(LPVOID)&PlayEffect);
 	OpenEffect.lpstrElementName = TEXT("pickupCoin.wav");
-	OpenBgm.lpstrDeviceType = L"waveaudio";
+	OpenEffect.lpstrDeviceType = L"waveaudio";
 	mciSendCommand(0, MCI_OPEN, MCI_OPEN_ELEMENT | MCI_OPEN_TYPE, (DWORD)(LPVOID)&OpenEffect);
 	dwID2 = OpenEffect.wDeviceID;
-	mciSendCommand(dwID, MCI_PLAY, MCI_NOTIFY, (DWORD)(LPVOID)&PlayEffect);
+	mciSendCommand(dwID2, MCI_PLAY, MCI_NOTIFY, (DWORD)(LPVOID)&PlayEffect);
+}
+
+void Wait(DWORD dwMilliSec)
+{
+	MSG msg;
+	DWORD t0, t1, diff;
+	t0 = GetTickCount64();
+
+	while (TRUE) 
+	{
+		t1 = GetTickCount64();
+
+		if 
+			(t0 <= t1) diff = t1 - t0;
+		else 
+			diff = 0xFFFFFFFF - t0 + t1;
+		
+		if (diff > dwMilliSec)  break;
+		
+		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) 
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+		Sleep(1);
+
+	}
+
+}
+
+void CursorHide()
+{
+	CONSOLE_CURSOR_INFO curInfo;
+	curInfo.bVisible = false;
+	curInfo.dwSize = 1;
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
 }

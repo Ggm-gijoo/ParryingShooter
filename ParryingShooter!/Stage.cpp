@@ -15,7 +15,6 @@ enum StageType
 	_BOSS,
 	_SHIELD,
 };
-float parryingTimer;
 deque<BULLET*> bulletDeq;
 
 void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PPOS pStartPos, PPOS pBossPos)
@@ -43,9 +42,11 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 {
 	for (int i = 0; i < StageHeight; i++)
 	{
+		cout << "                       ";
 		for (int j = 0; j < StageWeight; j++)
 		{
 			int wallColor = rand() % 15 + 1;
+
 			if (pPlayer->pos.x == j && pPlayer->pos.y == i)
 			{
 				setColor(9);
@@ -63,20 +64,19 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 			}
 			else if (Check(j, i))
 			{
-				setColor(5);
-				cout << "o ";
+
 			}
 			else
 			{
 				switch (Stage[i][j])
 				{
 				case _WALL:
-					setColor(15);
+					setColor(wallColor);
 					cout << "■";
 					break;
 				case _VOID:
 					setColor(9);
-					if (rand() % 15 < 12)
+					if (rand() % 15 < 14)
 						cout << "  ";
 					else
 						cout << " .";
@@ -93,46 +93,58 @@ bool Check(int x, int y)
 	{
 		if (bulletDeq[a]->bulletPos.x == x && bulletDeq[a]->bulletPos.y == y)
 		{
+			setColor(bulletDeq[a]->color);
+			cout << "●";
 			return true;
 		}
-		else return false;
 	}
+	return false;
 }
 
-void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pShield)
+void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pShield, PBOSS pBoss)
 {
 	if (pPlayer->pos.x + 1 <= StageWeight - 1)
 	{
-		if (stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '0' && stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '3')
+		if (pPlayer->pos.x + 1 == pBoss->bossPos.x && pPlayer->pos.y == pBoss->bossPos.y)
 		{
-				parryingTimer = (float)time(NULL);
+
+		}
+		else if (stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '0' && !pPlayer->isParryinged)
+		{
 				pPlayer->isParryinged = true;
 				pShield->shieldPos.y = pPlayer->pos.y;
 				pShield->shieldPos.x = pPlayer->pos.x + 1;
 		}
 	}
 }
-void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER pPlayer, PSHIELD pShield, PBOSS pBoss)
+void DestroyParrying(PPLAYER pPlayer, PSHIELD pShield)
 {
-	bulletDeq.push_back(pBullet);
-	Sleep(100);
+	pPlayer->isParryinged = false;
+	pShield->shieldPos.x = 1111;
+	pShield->shieldPos.y = 1111;
+}
+void BulletMove(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pShield, PBOSS pBoss)
+{
+	Wait(100);
 	for (int i = 0; i < bulletDeq.size(); i++)
 	{
 		if (bulletDeq[i]->bulletPos.y == pPlayer->pos.y && bulletDeq[i]->bulletPos.x == pPlayer->pos.x && !bulletDeq[i]->isPar)
 		{
-			cout << "총알 위치 : " << bulletDeq[i]->bulletPos.x;
-			cout << " 플레이어 위치 : " << pPlayer->pos.x << endl << endl;
 			pPlayer->pHp--;
+			bulletDeq.erase(bulletDeq.begin() + i);
 		}
-		else if (bulletDeq[i]->bulletPos.y == pShield->shieldPos.y && bulletDeq[i]->bulletPos.x == pShield->shieldPos.x && !bulletDeq[i]->isPar)
+		else if (bulletDeq[i]->bulletPos.y == pShield->shieldPos.y && bulletDeq[i]->bulletPos.x == pShield->shieldPos.x && !bulletDeq[i]->isPar || bulletDeq[i]->bulletPos.y == pShield->shieldPos.y && bulletDeq[i]->bulletPos.x - 1 == pShield->shieldPos.x && !bulletDeq[i]->isPar)
 		{
+			PlayingEffect();
+			bulletDeq[i]->color = 6;
 			bulletDeq[i]->isPar = true;
 		}
 		else if (bulletDeq[i]->bulletPos.y == pBoss->bossPos.y && bulletDeq[i]->bulletPos.x == pBoss->bossPos.x && bulletDeq[i]->isPar)
 		{
 			pBoss->bHp--;
+			bulletDeq.erase(bulletDeq.begin() + i);
 		}
-		else if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == '0')
+		else if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x - 1] == '0' || stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == '0')
 		{
 			bulletDeq.erase(bulletDeq.begin() + i);
 		}
@@ -143,16 +155,20 @@ void BulletMove(char stage[StageHeight][StageWeight], PBULLET pBullet, PPLAYER p
 	}
 }
 
-BULLET *BossFire(PBOSS pBoss, PPLAYER pPlayer)
+BULLET *BossInstantiateBullet(PBOSS pBoss, PPLAYER pPlayer)
 {
-	BULLET *bossBullet = new BULLET;
+	BULLET* bossBullet = new BULLET;
 
-	if (bossBullet->bulletPos.x == bossBullet->bulletPos.y && bossBullet->bulletPos.y == -842150451)
-	{
-		bossBullet->bulletPos.x = pBoss->bossPos.x - 1;
-		bossBullet->bulletPos.y = pBoss->bossPos.y;
-	}
-	return bossBullet;	
+	bossBullet->bulletPos.x = pBoss->bossPos.x - 1;
+	bossBullet->bulletPos.y = pBoss->bossPos.y;
+
+	bulletDeq.push_back(bossBullet);
+	return bossBullet;
+}
+
+void BossFire(PBOSS pBoss, PPLAYER pPlayer)
+{
+	BossInstantiateBullet(pBoss, pPlayer);
 }
 
 
@@ -205,21 +221,21 @@ void PlayerMove(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 	if (GetAsyncKeyState(VK_UP) & 0X8000)
 	{
 		PMoveUp(stage, pPlayer);
-		Sleep(50);
+		Wait(30);
 	}
 	if (GetAsyncKeyState(VK_DOWN) & 0X8000)
 	{
 		PMoveDown(stage, pPlayer);
-		Sleep(50);
+		Wait(30);
 	}
 	if (GetAsyncKeyState(VK_LEFT) & 0X8000)
 	{
 		PMoveLeft(stage, pPlayer);
-		Sleep(50);
+		Wait(30);
 	}
 	if (GetAsyncKeyState(VK_RIGHT) & 0X8000)
 	{
 		PMoveRight(stage, pPlayer);
-		Sleep(50);
+		Wait(30);
 	}
 }

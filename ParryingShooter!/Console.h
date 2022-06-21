@@ -21,3 +21,9 @@ void fullscreen();
 void PlayingBgm();
 
 void PlayingEffect();
+
+void Wait(DWORD dwMilliSec);
+
+void CursorHide();
+
+
