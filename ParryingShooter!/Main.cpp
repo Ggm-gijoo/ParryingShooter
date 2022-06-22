@@ -45,6 +45,7 @@ int main()
 	char startInput = _getch();
 	int whileCountRand = 0;
 	int whileCount = 0;
+	bool isEscInput = false;
 	system("cls");
 	while (true)
 	{
@@ -67,20 +68,28 @@ int main()
 		
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
 		{
+			if (!isEscInput)
+			{
 				Wait(100);
-				char yesNoInput;
-				setColor(15);
-				cout << "                                 게임을 종료합니다 . " << endl;
-				cout << "                                 예(Y)  아니오(N) " << endl;
-				yesNoInput = _getch();
-				switch (yesNoInput)
+				isEscInput = true;
+				while (isEscInput)
 				{
-				case 'y': case 'Y':
-					return false;
-					break;
-				case 'n': case 'N':
-					break;
-				system("cls");
+					char yesNoInput;
+					setColor(15);
+					cout << "                                 게임을 종료합니다 . " << endl;
+					cout << "                                 예(Y)  아니오(N) " << endl;
+					yesNoInput = _getch();
+					switch (yesNoInput)
+					{
+					case 'y': case 'Y':
+						return false;
+						break;
+					case 'n': case 'N':
+						isEscInput = false;
+						break;
+					}
+					system("cls");
+				}
 			}
 		}
 
@@ -96,7 +105,14 @@ int main()
 			system("cls");
 			gotoxy(0, 4);
 			setColor(9);
-			cout << "                                 네가 이겼단다..." << endl << endl << endl;
+			wcout << " /$$     /$$ /$$$$$$  /$$   /$$       /$$      /$$ /$$$$$$ /$$   /$$ /$$ /$$" << endl;
+			wcout << "|  $$   /$$//$$__  $$| $$  | $$      | $$  /$ | $$|_  $$_/| $$$ | $$| $$| $$" << endl;
+			wcout << " \\  $$ /$$/| $$  \\ $$| $$  | $$      | $$ /$$$| $$  | $$  | $$$$| $$| $$| $$" << endl;
+			wcout << "  \\  $$$$/ | $$  | $$| $$  | $$      | $$/$$ $$ $$  | $$  | $$ $$ $$| $$| $$" << endl;
+			wcout << "   \\  $$/  | $$  | $$| $$  | $$      | $$$$_  $$$$  | $$  | $$  $$$$|__/|__/" << endl;
+			wcout << "    | $$   | $$  | $$| $$  | $$      | $$$/ \\  $$$  | $$  | $$\\  $$$        " << endl;
+			wcout << "    | $$   |  $$$$$$/|  $$$$$$/      | $$/   \\  $$ /$$$$$$| $$ \\  $$ /$$ /$$" << endl;
+			wcout << "    |__/    \\______/  \\______/       |__/     \\__/|______/|__/  \\__/|__/|__/" << endl << endl << endl;
 			break;
 		}
 		else if (PlayerDie(&tPlayer))
@@ -104,7 +120,15 @@ int main()
 			system("cls");
 			gotoxy(0, 4);
 			setColor(4);
-			cout << "                                 네가 졌단다..." << endl << endl << endl;
+			wcout << " /$$     /$$ /$$$$$$  /$$   /$$       /$$        /$$$$$$   /$$$$$$  /$$$$$$$$            " << endl;
+			wcout << "|  $$   /$$//$$__  $$| $$  | $$      | $$       /$$__  $$ /$$__  $$| $$_____/            " << endl;
+			wcout << " \\  $$ /$$/| $$  \\ $$| $$  | $$      | $$      | $$  \\ $$| $$  \\__/| $$                  " << endl;
+			wcout << "  \\  $$$$/ | $$  | $$| $$  | $$      | $$      | $$  | $$|  $$$$$$ | $$$$$               " << endl;
+			wcout << "   \\  $$/  | $$  | $$| $$  | $$      | $$      | $$  | $$ \\____  $$| $$__/               " << endl;
+			wcout << "    | $$   | $$  | $$| $$  | $$      | $$      | $$  | $$ /$$  \\ $$| $$                  " << endl;
+			wcout << "    | $$   |  $$$$$$/|  $$$$$$/      | $$$$$$$$|  $$$$$$/|  $$$$$$/| $$$$$$$$ /$$ /$$ /$$" << endl;
+			wcout << "    |__/    \\______/  \\______/       |________/ \\______/  \\______/ |________/|__/|__/|__/" << endl << endl << endl;
+
 			break;
 		}
 		whileCountRand+= rand()%3+1;

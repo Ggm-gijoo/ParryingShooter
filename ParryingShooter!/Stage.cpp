@@ -40,7 +40,19 @@ void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss,
 
 void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PSHIELD pShield)
 {
-	cout << "           플레이어 HP  " << pPlayer->pHp << "                                   보스 HP  " << pBoss->bHp << endl << endl;
+	setColor(9);
+	cout << "           플레이어 HP  ";
+	for (int i = 0; i < pPlayer->pHp; i++)
+	{
+		cout << "♥";
+	}
+	setColor(4);
+	cout << "                            보스 HP  ";
+	for (int i = 0; i < pBoss->bHp; i++)
+	{
+		cout << "♥";
+	}
+	cout << endl << endl;
 	for (int i = 0; i < StageHeight; i++)
 	{
 		cout << "                       ";
