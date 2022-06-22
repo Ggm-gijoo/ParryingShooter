@@ -9,6 +9,9 @@ MCI_PLAY_PARMS PlayEffect;
 UINT dwID;
 UINT dwID2;
 
+int keyTime = 100;
+clock_t keyTimeCheck[256];
+
 void gotoxy(int x, int y)
 {
 	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -88,4 +91,16 @@ void CursorHide()
 	curInfo.bVisible = false;
 	curInfo.dwSize = 1;
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+}
+
+bool IsKeyDown(int vKey)
+{
+	clock_t now = clock();
+
+	if (GetAsyncKeyState(vKey) & 0x8000 && now - keyTimeCheck[vKey] >= keyTime)
+	{
+		keyTimeCheck[vKey] = now;
+		return true;
+	}
+	return false;
 }

@@ -48,8 +48,9 @@ int main()
 	system("cls");
 	while (true)
 	{
-		gotoxy(0, 10);
-		cout << "                        이동 : 방향키 \t 패링 : 스페이스 바" << endl << endl;
+		gotoxy(0, 4);
+		cout << "                        이동 : 방향키 \t 패링 : 스페이스 바" << endl;
+		cout << "                                  종료키 : ESC" << endl << endl;
 		DrawStage(Stage, &tPlayer, &tBoss, &tShield);
 		if (whileCountRand >= 14)
 		{
@@ -59,36 +60,53 @@ int main()
 		if (whileCount >= 2)
 		{
 			DestroyParrying(&tPlayer, &tShield);
+			BossMove(Stage, &tBoss);
 			whileCount = 0;
 		}
 		BulletMove(Stage, &tPlayer, &tShield, &tBoss);
 		
 		if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
 		{
-			Wait(100);
-			char yesNoInput;
-			setColor(15);
-			cout << "                                 게임을 종료합니다 . " << endl;
-			cout << "                                 예(Y)  아니오(N) " << endl;
-			yesNoInput = _getch();
-			switch (yesNoInput)
-			{
-			case 'y': case 'Y':
-				return false;
-				break;
-			case 'n': case 'N':
-				break;
-			default:
-				break;
+				Wait(100);
+				char yesNoInput;
+				setColor(15);
+				cout << "                                 게임을 종료합니다 . " << endl;
+				cout << "                                 예(Y)  아니오(N) " << endl;
+				yesNoInput = _getch();
+				switch (yesNoInput)
+				{
+				case 'y': case 'Y':
+					return false;
+					break;
+				case 'n': case 'N':
+					break;
+				system("cls");
 			}
-			system("cls");
 		}
+
 		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 		{
 			Parrying(Stage, &tPlayer, &tShield, &tBoss);
 		}
+
 		PlayerMove(Stage, &tPlayer);
-		
+
+		if (PlayerWin(&tBoss))
+		{
+			system("cls");
+			gotoxy(0, 4);
+			setColor(9);
+			cout << "                                 네가 이겼단다..." << endl << endl << endl;
+			break;
+		}
+		else if (PlayerDie(&tPlayer))
+		{
+			system("cls");
+			gotoxy(0, 4);
+			setColor(4);
+			cout << "                                 네가 졌단다..." << endl << endl << endl;
+			break;
+		}
 		whileCountRand+= rand()%3+1;
 		whileCount++;
 	}

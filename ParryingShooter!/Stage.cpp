@@ -40,6 +40,7 @@ void SetStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss,
 
 void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss, PSHIELD pShield)
 {
+	cout << "           플레이어 HP  " << pPlayer->pHp << "                                   보스 HP  " << pBoss->bHp << endl << endl;
 	for (int i = 0; i < StageHeight; i++)
 	{
 		cout << "                       ";
@@ -54,7 +55,7 @@ void DrawStage(char Stage[StageHeight][StageWeight],PPLAYER pPlayer, PBOSS pBoss
 			}
 			else if (pBoss->bossPos.x == j && pBoss->bossPos.y == i)
 			{
-				setColor(5);
+				setColor(4);
 				cout << "◀";
 			}
 			else if (pShield->shieldPos.x == j && pShield->shieldPos.y == i)
@@ -144,7 +145,7 @@ void BulletMove(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD p
 			pBoss->bHp--;
 			bulletDeq.erase(bulletDeq.begin() + i);
 		}
-		else if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x - 1] == '0' || stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == '0')
+		else if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == '0')
 		{
 			bulletDeq.erase(bulletDeq.begin() + i);
 		}
@@ -171,12 +172,26 @@ void BossFire(PBOSS pBoss, PPLAYER pPlayer)
 	BossInstantiateBullet(pBoss, pPlayer);
 }
 
+bool PlayerDie(PPLAYER pPlayer)
+{
+	if (pPlayer->pHp <= 0)
+		return true;
+	return false;
+}
+
+bool PlayerWin(PBOSS pBoss)
+{
+	if (pBoss->bHp <= 0)
+		return true;
+	return false;
+}
+
 
 void PMoveDown(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 {
 	if (pPlayer->pos.y + 1 <= StageHeight)
 	{
-		if (stage[pPlayer->pos.y+1][pPlayer->pos.x] != '0' && stage[pPlayer->pos.y+1][pPlayer->pos.x] != '3' && stage[pPlayer->pos.y + 1][pPlayer->pos.x] != '4')
+		if (stage[pPlayer->pos.y+1][pPlayer->pos.x] != '0')
 		{
 			++pPlayer->pos.y;
 		}
@@ -187,31 +202,9 @@ void PMoveUp(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 {
 	if (pPlayer->pos.y - 1 >= 0)
 	{
-		if (stage[pPlayer->pos.y-1][pPlayer->pos.x] != '0' && stage[pPlayer->pos.y-1][pPlayer->pos.x] != '3' && stage[pPlayer->pos.y - 1][pPlayer->pos.x] != '4')
+		if (stage[pPlayer->pos.y-1][pPlayer->pos.x] != '0')
 		{
 			--pPlayer->pos.y;
-		}
-	}
-}
-
-void PMoveLeft(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
-{
-	if (pPlayer->pos.x - 1 >= 0)
-	{
-		if (stage[pPlayer->pos.y][pPlayer->pos.x - 1] != '0' && stage[pPlayer->pos.y][pPlayer->pos.x - 1] != '3' && stage[pPlayer->pos.y][pPlayer->pos.x - 1] != '4')
-		{
-			--pPlayer->pos.x;
-		}
-	}
-}
-
-void PMoveRight(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
-{
-	if (pPlayer->pos.x + 1 <= StageWeight - 1)
-	{
-		if (stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '0' && stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '3' && stage[pPlayer->pos.y][pPlayer->pos.x + 1] != '4')
-		{
-			++pPlayer->pos.x;
 		}
 	}
 }
@@ -228,14 +221,42 @@ void PlayerMove(char stage[StageHeight][StageWeight], PPLAYER pPlayer)
 		PMoveDown(stage, pPlayer);
 		Wait(30);
 	}
-	if (GetAsyncKeyState(VK_LEFT) & 0X8000)
+}
+
+void BMoveDown(char stage[StageHeight][StageWeight], PBOSS pBoss)
+{
+	if (pBoss->bossPos.y + 1 <= StageHeight)
 	{
-		PMoveLeft(stage, pPlayer);
-		Wait(30);
+		if (stage[pBoss->bossPos.y + 1][pBoss->bossPos.x] != '0')
+		{
+			++pBoss->bossPos.y;
+		}
 	}
-	if (GetAsyncKeyState(VK_RIGHT) & 0X8000)
+}
+
+void BMoveUp(char stage[StageHeight][StageWeight], PBOSS pBoss)
+{
+	if (pBoss->bossPos.y - 1 >= 0)
 	{
-		PMoveRight(stage, pPlayer);
-		Wait(30);
+		if (stage[pBoss->bossPos.y - 1][pBoss->bossPos.x] != '0')
+		{
+			--pBoss->bossPos.y;
+		}
+	}
+}
+
+void BossMove(char stage[StageHeight][StageWeight], PBOSS pBoss)
+{
+	int randomMove = rand() % 3;
+	switch (randomMove)
+	{
+	case 0:
+		BMoveDown(stage, pBoss);
+		break;
+	case 1:
+		BMoveUp(stage, pBoss);
+		break;
+	default:
+		break;
 	}
 }

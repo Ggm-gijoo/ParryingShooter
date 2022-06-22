@@ -26,4 +26,6 @@ void Wait(DWORD dwMilliSec);
 
 void CursorHide();
 
+bool IsKeyDown(int vKey);
+
 
