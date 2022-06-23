@@ -144,6 +144,7 @@ void BulletMove(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD p
 		if (bulletDeq[i]->bulletPos.y == pPlayer->pos.y && bulletDeq[i]->bulletPos.x == pPlayer->pos.x && !bulletDeq[i]->isPar)
 		{
 			pPlayer->pHp--;
+			system("cls");
 			bulletDeq.erase(bulletDeq.begin() + i);
 		}
 		else if (bulletDeq[i]->bulletPos.y == pShield->shieldPos.y && bulletDeq[i]->bulletPos.x == pShield->shieldPos.x && !bulletDeq[i]->isPar || bulletDeq[i]->bulletPos.y == pShield->shieldPos.y && bulletDeq[i]->bulletPos.x - 1 == pShield->shieldPos.x && !bulletDeq[i]->isPar)
@@ -155,6 +156,7 @@ void BulletMove(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD p
 		else if (bulletDeq[i]->bulletPos.y == pBoss->bossPos.y && bulletDeq[i]->bulletPos.x == pBoss->bossPos.x && bulletDeq[i]->isPar)
 		{
 			pBoss->bHp--;
+			system("cls");
 			bulletDeq.erase(bulletDeq.begin() + i);
 		}
 		else if (stage[bulletDeq[i]->bulletPos.y][bulletDeq[i]->bulletPos.x] == '0')
