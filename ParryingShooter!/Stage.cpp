@@ -132,7 +132,6 @@ void Parrying(char stage[StageHeight][StageWeight], PPLAYER pPlayer, PSHIELD pSh
 }
 void DestroyParrying(PPLAYER pPlayer, PSHIELD pShield)
 {
-	pPlayer->isParryinged = false;
 	pShield->shieldPos.x = 1111;
 	pShield->shieldPos.y = 1111;
 }

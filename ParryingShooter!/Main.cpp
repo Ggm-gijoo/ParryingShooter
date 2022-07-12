@@ -45,6 +45,7 @@ int main()
 	char startInput = _getch();
 	int whileCountRand = 0;
 	int whileCount = 0;
+	int parryingCount = 0;
 	bool isEscInput = false;
 	system("cls");
 	while (true)
@@ -63,6 +64,11 @@ int main()
 			DestroyParrying(&tPlayer, &tShield);
 			BossMove(Stage, &tBoss);
 			whileCount = 0;
+		}
+		if (parryingCount >= 5)
+		{
+			parryingCount = 0;
+			tPlayer.isParryinged = false;
 		}
 		BulletMove(Stage, &tPlayer, &tShield, &tBoss);
 		
@@ -96,6 +102,10 @@ int main()
 		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
 		{
 			Parrying(Stage, &tPlayer, &tShield, &tBoss);
+			if (parryingCount == 0)
+			{
+				parryingCount++;
+			}
 		}
 
 		PlayerMove(Stage, &tPlayer);
@@ -134,5 +144,7 @@ int main()
 		}
 		whileCountRand+= rand()%3+1;
 		whileCount++;
+		if (parryingCount > 0)
+			parryingCount++;
 	}
 }
